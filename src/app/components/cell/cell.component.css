@@ -1,0 +1,15 @@
+.cell {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #333;
+    font-size: 80px;
+}
+
+.cellContent {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    line-height: 150px;
+    user-select: none;
+}
