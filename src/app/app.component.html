@@ -1,2 +1,8 @@
-<app-board></app-board>
-{{ turn }}
+<div class="gameContainer">
+    <h1>TicTacToe</h1>
+    <div class="boardContainer">
+        <app-board class="board"></app-board>
+    </div>
+    <p>{{ turnText }}</p>
+    <button (click)="resetGame()" *ngIf="gameStarted">Reset Game</button>
+</div>

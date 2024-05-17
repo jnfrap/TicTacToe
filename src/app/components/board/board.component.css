@@ -14,6 +14,7 @@ th {
 
 th:hover {
     background-color: #f2f2f2;
+    cursor: pointer;
 }
 
 .app-cell {
