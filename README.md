@@ -1,6 +1,6 @@
 # TicTacToe
 
-A simple TicTactToe game I did in a few days using Angular 16.
+A simple TicTacToe game I did in a few days using Angular 16.
 
 ## How to launch
 
