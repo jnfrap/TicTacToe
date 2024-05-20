@@ -24,13 +24,16 @@ export class AppComponent {
   ) { }
 
   ngOnInit(): void {
+    // Subscribe to the turn observable to get the current turn
     this.turnSubscription = this.gameController.getTurn().subscribe(turn => {
       this.turn = turn;
       this.turnText = this.turnTextOptions[this.turn];
     });
+    // Subscribe to the gameStarted observable to get the gameStarted value
     this.gameStartedSubscription = this.gameController.getGameStarted().subscribe(gameStarted => {
       this.gameStarted = gameStarted;
     });
+    // Subscribe to the gameEnded observable to get the gameEnded value. If the game is ended, set the turnText to the game result
     this.gameController.getGameEnded().subscribe(gameEnded => {
       this.gameEnded = gameEnded;
       if (gameEnded) {
@@ -39,6 +42,9 @@ export class AppComponent {
     });
   }
 
+  /**
+   * Calls the resetGame method of the gameController to reset the game
+   */
   resetGame() {
     this.gameController.resetGame();
   }

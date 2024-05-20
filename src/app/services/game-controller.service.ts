@@ -22,18 +22,34 @@ export class GameControllerService {
 
   constructor() { }
 
+  /**
+   * Returns the current turn as an observable
+   * @returns 0 if it's player's turn, 1 if it's computer's turn
+   */
   getTurn(): Observable<0|1> {
     return this.turn.asObservable();
   }
 
+  /**
+   * Sets the turn to the given value
+   * @param turn 0 if it's player's turn, 1 if it's computer's turn
+   */
   setTurn(turn: 0|1): void {
     this.turn.next(turn);
   }
 
+  /**
+   * Returns the cell selection of the computer as an observable
+   * @returns the cell selection of the computer
+   */
   getComputerCellSelection(): Observable<number> {
     return this.computerCellSelection.asObservable();
   }
 
+  /**
+   * Switches the turn and updates the cells array. If it's computer's turn, computer plays and returns the cell selection of the computer after 1 second of delay. If the game is ended, it does nothing.
+   * @param cellId The id of the cell that is selected by the player or the computer
+   */
   switchTurn(cellId: number): void {
     if (this.gameStarted.getValue() === false || this.gameEnded.getValue() === true) {
       return;
@@ -55,6 +71,9 @@ export class GameControllerService {
     }
   }
 
+  /**
+   * Computer plays by checking if it can win in the next move, if the player can win in the next move, if it can take the center, or if it should make a random move.
+   */
   computerPlay(): void {
     // Can computer win?
     for (let i = 0; i < 3; i++) {
@@ -102,6 +121,10 @@ export class GameControllerService {
     this.cells[Math.floor((cellId - 1) / 3)][(cellId - 1) % 3] = 'O';
   }
 
+  /**
+   * Checks if the game is ended by checking if there is a winner or if it's a tie
+   * @returns 'pw' if the player won, 'cw' if the computer won, 'tie' if it's a tie, 'none' if the game is not ended yet
+   */
   checkIfWon(): 'pw' | 'cw' | 'tie' | 'none' {
     for (let i = 0; i < 3; i++) {
       if (this.cells[i][0] === this.cells[i][1] && this.cells[i][1] === this.cells[i][2] && this.cells[i][0] !== ' ') {
@@ -123,18 +146,33 @@ export class GameControllerService {
     return 'none';
   }
 
+  /**
+   * Returns a boolean observable that indicates if the game is started
+   * @returns true if the game is started, false otherwise
+   */
   getGameStarted(): Observable<boolean> {
     return this.gameStarted.asObservable();
   }
 
+  /**
+   * Returns a boolean observable that indicates if the game is ended
+   * @returns true if the game is ended, false otherwise
+   */
   getGameEnded(): Observable<boolean> {
     return this.gameEnded.asObservable();
   }
 
+  /**
+   * Starts the game by setting the gameStarted to true
+   */
   startGame(): void {
     this.gameStarted.next(true);
   }
 
+  /**
+   * Ends the game by setting the gameEnded to true and setting the gameResult to the given value
+   * @param gameResult 'pw' if the player won, 'cw' if the computer won, 'tie' if it's a tie
+   */
   endGame(gameResult: string): void {
     if (gameResult === 'pw') {
       this.gameResult = 'Player won';
@@ -147,10 +185,17 @@ export class GameControllerService {
     this.gameEnded.next(true);
   }
 
+  /**
+   * Returns the game result as string
+   * @returns 'Player won' if the player won, 'Computer won' if the computer won, 'Tie' if it's a tie
+   */
   getGameResult(): string {
     return this.gameResult;
   }
 
+  /**
+   * Resets the game by resetting all the variables to their initial values
+   */
   resetGame(): void {
     var id = window.setTimeout(function() {}, 0);
     while (id--) {
@@ -170,6 +215,10 @@ export class GameControllerService {
     this.reseting.next(this.reseting.getValue() * -1);
   }
 
+  /**
+   * Gets a number observable that indicates if the game is currently reseting. It's value changes every time the game is reset. This is to notify the cells to reset their values and prevent the computer from playing after the game is reset.
+   * @returns A number observable that indicates if the game is currently reseting
+   */
   getReseting(): Observable<number> {
     return this.reseting.asObservable();
   }

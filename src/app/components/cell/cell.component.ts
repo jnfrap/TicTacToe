@@ -24,6 +24,7 @@ export class CellComponent {
   ) { }
 
   ngOnInit(): void {
+    // Subscribe to the turn observable to get the current turn
     this.turnSubscription = this.gameController.getTurn().subscribe(turn => {
       this.turn = turn;
       if (this.turn === 0) {
@@ -31,6 +32,7 @@ export class CellComponent {
       }
     });
 
+    // Subscribe to the computerCellSelection observable to get the cell selection of the computer and mark the cell with 'O' if this cell is selected by the computer
     this.gameController.getComputerCellSelection().subscribe(cellId => {
       if (cellId === this.id && this.turn === 1 && this.clickable && !this.pressed && !this.gameEnded) {
         const htmltextcell = document.getElementById('Cell' + this.id);
@@ -44,14 +46,17 @@ export class CellComponent {
       }
     });
 
+    // Subscribe to the gameStarted observable to get the gameStarted value
     this.gameController.getGameStarted().subscribe(gameStarted => {
       this.gameStarted = gameStarted;
     });
 
+    // Subscribe to the gameEnded observable to get the gameEnded value
     this.gameController.getGameEnded().subscribe(gameEnded => {
       this.gameEnded = gameEnded;
     });
 
+    // Subscribe to the reseting observable, reset the cell value and make it clickable when the game is reset
     this.gameController.getReseting().subscribe(reseting => {
         this.cellValue = ' ';
         this.clickable = true;
@@ -60,6 +65,7 @@ export class CellComponent {
   }
 
   onClickEventHandler() {
+    // If is possible to click the cell, the game is started and it's player's turn, mark the cell with 'X' and switch the turn
     if (this.clickable && this.gameController.getGameStarted() && this.turn === 0 && !this.pressed) {
       if (!this.gameStarted) {
         this.gameController.startGame();
