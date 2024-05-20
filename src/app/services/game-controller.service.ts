@@ -55,10 +55,51 @@ export class GameControllerService {
     }
   }
 
-  computerPlay(): void { // Computer plays randomly, no AI
+  computerPlay(): void {
+    // Can computer win?
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (this.cells[i][j] === ' ') {
+          this.cells[i][j] = 'O';
+          if (this.checkIfWon() === 'cw') {
+            this.computerCellSelection.next(i * 3 + j + 1);
+            this.cellIds = this.cellIds.filter(id => id !== i * 3 + j + 1);
+            return;
+          }
+          this.cells[i][j] = ' ';
+        }
+      }
+    }
+
+    // Can player win?
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (this.cells[i][j] === ' ') {
+          this.cells[i][j] = 'X';
+          if (this.checkIfWon() === 'pw') {
+            this.computerCellSelection.next(i * 3 + j + 1);
+            this.cellIds = this.cellIds.filter(id => id !== i * 3 + j + 1);
+            this.cells[i][j] = 'O';
+            return;
+          }
+          this.cells[i][j] = ' ';
+        }
+      }
+    }
+      
+
+    // Can computer take the center?
+    if (this.cells[1][1] === ' ') {
+      this.computerCellSelection.next(5);
+      this.cellIds = this.cellIds.filter(id => id !== 5);
+      this.cells[1][1] = 'O';
+      return;
+    }
+    // Random move
     const cellId = this.cellIds[Math.floor(Math.random() * this.cellIds.length)];
     this.computerCellSelection.next(cellId);
     this.cellIds = this.cellIds.filter(id => id !== cellId);
+    this.cells[Math.floor((cellId - 1) / 3)][(cellId - 1) % 3] = 'O';
   }
 
   checkIfWon(): 'pw' | 'cw' | 'tie' | 'none' {
