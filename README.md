@@ -1,6 +1,6 @@
 # TicTacToe
 
-A simple TicTacToe game I did in a few days using Angular 16.
+A simple TicTacToe game I did in a few days using Angular 16. You can test it [here](http://51.77.214.235/tictactoe/).
 
 ## How to launch
 
